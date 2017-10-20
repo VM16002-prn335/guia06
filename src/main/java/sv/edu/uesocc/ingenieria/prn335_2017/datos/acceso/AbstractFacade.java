@@ -19,9 +19,17 @@ public abstract class AbstractFacade<T> {
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     protected abstract EntityManager getEntityManager();
-
+    
+    /**
+     * 
+     * @param entity 
+     */
     public void create(T entity) {
         EntityManager em = getEntityManager();
         try {
@@ -34,7 +42,11 @@ public abstract class AbstractFacade<T> {
             System.out.println("ERROR: " + e);
         }
     }
-
+    
+    /**
+     * 
+     * @param entity 
+     */
     public void edit(T entity) {
         EntityManager em = getEntityManager();
         try {
@@ -48,6 +60,10 @@ public abstract class AbstractFacade<T> {
         }
     }
     
+    /**
+     * 
+     * @param entity 
+     */
     public void remove(T entity) {
         EntityManager em = getEntityManager();
         try {
@@ -61,10 +77,19 @@ public abstract class AbstractFacade<T> {
         }
     }
 
+    /**
+     * 
+     * @param id
+     * @return 
+     */
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<T> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
@@ -87,6 +112,10 @@ public abstract class AbstractFacade<T> {
     }
 
 
+    /**
+     * 
+     * @return 
+     */
     public int count() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);

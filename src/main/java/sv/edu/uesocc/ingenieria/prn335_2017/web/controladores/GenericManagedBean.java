@@ -8,81 +8,106 @@ package sv.edu.uesocc.ingenieria.prn335_2017.web.controladores;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import sv.edu.uesocc.ingenieria.prn335_2017.datos.acceso.GenericFacadeLocal;
 
 /**
  *
  * @author bryan
  */
-public abstract class GenericManagedBean<T> implements Serializable{
+public abstract class GenericManagedBean<T> implements Serializable {
+
     List<T> listaDatos;
 
     /**
-     * este metodo sirve para crear un nuevo un registro
+     * Este metodo sirve para crear un nuevo un registro
      */
     public void crear() {
-        if(getFacadeLocal()!=null){
+        if (getFacadeLocal() != null) {
             try {
                 System.out.println("Llego aqui");
                 getFacadeLocal().create(getEntity());
                 llenarLista();
+                enviarMensaje(false,"Registro creado correctamente.");
             } catch (Exception ex) {
-                System.out.println("Error: "+ex);
+                System.out.println("Error: " + ex);
+                enviarMensaje(true,"Error al crear registro creado correctamente.");
             }
         }
     }
-    
+
     /**
-     * este metodo sirve para editar un registro
+     * Este metodo sirve para editar un registro
      */
     public void editar() {
-        if(getFacadeLocal()!=null){
+        if (getFacadeLocal() != null) {
             try {
                 System.out.println("Llego aqui");
                 getFacadeLocal().edit(getEntity());
                 llenarLista();
+                enviarMensaje(false,"Edicion realizada correctamente.");
             } catch (Exception ex) {
-                System.out.println("Error: "+ex);
+                System.out.println("Error: " + ex);
+                enviarMensaje(true,"Error al editar registro.");
             }
         }
     }
-    
+
     /**
-     * este metodo sirve para eliminar un registro
+     * Este metodo sirve para eliminar un registro
      */
     public void eliminar() {
-        if(getFacadeLocal()!=null){
+        if (getFacadeLocal() != null) {
             try {
                 System.out.println("Llego aqui");
                 getFacadeLocal().remove(getEntity());
                 llenarLista();
+                enviarMensaje(false,"Registro eliminado correctamente");
             } catch (Exception ex) {
-                System.out.println("Error: "+ex);
+                System.out.println("Error: " + ex);
+                enviarMensaje(true,"Error al eliminar registro");
             }
         }
     }
-    
+
     /**
-     * Este metodo sirve para llenar una lista de datos obtenidos de la base de datos
+     * Este metodo sirve para llenar una lista de datos obtenidos de la base de
+     * datos
      */
     public void llenarLista() {
-         if (getFacadeLocal().findAll() != null) {
+        if (getFacadeLocal().findAll() != null) {
             this.listaDatos = getFacadeLocal().findAll();
-        }else{
-             this.listaDatos = Collections.EMPTY_LIST;
+        } else {
+            this.listaDatos = Collections.EMPTY_LIST;
         }
     }
-    
+
     /**
+     * Este metodo sirve para mostrar un mensaje en el JSF
      *
-     * @return
+     * @param error espera un true o false para mostrar un mensaje de error o
+     * confirmacion respectivaente
+     * @param mensaje espera el mensaje a mostrar
      */
-    protected abstract GenericFacadeLocal<T> getFacadeLocal();
-    
+    public void enviarMensaje(boolean error, String mensaje) {
+        if (error=false) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", mensaje));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info", mensaje));
+        }
+    }
+
     /**
      * 
-     * @return 
+     * @return se espera que retorne el una interfaz de algun tipo para trabajar con ell
+     */
+    protected abstract GenericFacadeLocal<T> getFacadeLocal();
+
+    /**
+     *
+     * @return se espera que retorne una entitdad para trabajar con ella
      */
     public abstract T getEntity();
-    
+
 }

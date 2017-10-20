@@ -64,9 +64,36 @@ public class UsuarioBean extends GenericManagedBean<Usuario> implements Serializ
     public void setListaDatos(List<Usuario> listaDatos) {
         this.listaDatos = listaDatos;
     }
+    // </editor-fold>
     
-    
+    // <editor-fold defaultstate="collapsed" desc="Overrrides">
+    @Override
+    public Usuario getEntity() {
+        return usuarioEntity;
+    }
 
+    @Override
+    protected GenericFacadeLocal<Usuario> getFacadeLocal() {
+        return facade;
+    }
+
+    @Override
+    public void editar() {
+        super.editar(); 
+        reiniciarValores();
+    }
+
+    @Override
+    public void eliminar() {
+        super.eliminar(); 
+        reiniciarValores();
+    }
+
+    @Override
+    public void crear() {
+        super.crear(); 
+        reiniciarValores();
+    }
     // </editor-fold>
     
     @PostConstruct
@@ -85,17 +112,12 @@ public class UsuarioBean extends GenericManagedBean<Usuario> implements Serializ
     }
     
     public void reiniciarValores(){
-        System.out.println("reinstanciar");
-        usuarioEntity = new Usuario();
-    }
-
-    @Override
-    public Usuario getEntity() {
-        return usuarioEntity;
-    }
-
-    @Override
-    protected GenericFacadeLocal<Usuario> getFacadeLocal() {
-        return facade;
+        usuarioEntity.setActivo(false);
+        usuarioEntity.setApellidos(null);
+        usuarioEntity.setComentarios(null);
+        usuarioEntity.setFechaNacimiento(null);
+        usuarioEntity.setNombres(null);
+        usuarioEntity.setPassword(null);
+        usuarioEntity.setUsername(null);
     }
 }
