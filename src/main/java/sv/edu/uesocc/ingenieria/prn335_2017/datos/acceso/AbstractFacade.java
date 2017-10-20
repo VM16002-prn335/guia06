@@ -23,7 +23,15 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
-        getEntityManager().persist(entity);
+        EntityManager em = getEntityManager();
+        try {
+            if (em != null && entity != null) {
+                em.persist(entity);
+            }
+            System.out.println("algo es nulo");
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+        }
     }
 
     public void edit(T entity) {
@@ -44,14 +52,21 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().createQuery(cq).getResultList();
     }
 
-    public List<T> findRange(int[] range) {
+    /**
+     *
+     * @param desde
+     * @param hasta
+     * @return
+     */
+    public List<T> findRange(int desde, int hasta) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0] + 1);
-        q.setFirstResult(range[0]);
+        q.setMaxResults(hasta);
+        q.setFirstResult(desde);
         return q.getResultList();
     }
+
 
     public int count() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
