@@ -16,12 +16,45 @@ import sv.edu.uesocc.ingenieria.prn335_2017.datos.acceso.GenericFacadeLocal;
  */
 public abstract class GenericManagedBean<T> implements Serializable{
     List<T> listaDatos;
-    
+
+    /**
+     * este metodo sirve para crear un nuevo un registro
+     */
     public void crear() {
         if(getFacadeLocal()!=null){
             try {
                 System.out.println("Llego aqui");
                 getFacadeLocal().create(getEntity());
+                llenarLista();
+            } catch (Exception ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
+    }
+    
+    /**
+     * este metodo sirve para editar un registro
+     */
+    public void editar() {
+        if(getFacadeLocal()!=null){
+            try {
+                System.out.println("Llego aqui");
+                getFacadeLocal().edit(getEntity());
+                llenarLista();
+            } catch (Exception ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
+    }
+    
+    /**
+     * este metodo sirve para eliminar un registro
+     */
+    public void eliminar() {
+        if(getFacadeLocal()!=null){
+            try {
+                System.out.println("Llego aqui");
+                getFacadeLocal().remove(getEntity());
                 llenarLista();
             } catch (Exception ex) {
                 System.out.println("Error: "+ex);

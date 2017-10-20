@@ -84,20 +84,8 @@ public class UsuarioBean extends GenericManagedBean<Usuario> implements Serializ
         btnVisible = false;
     }
     
-    /**
-     * Este metodo sirve para poder agregar un nuevo registro a la base de datos
-     */
-    public void crearnuev() {
-        try {
-            System.out.println(usuarioEntity.getNombres());
-            facade.create(usuarioEntity);
-            llenarLista();
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
-    }
-    
     public void reiniciarValores(){
+        System.out.println("reinstanciar");
         usuarioEntity = new Usuario();
     }
 

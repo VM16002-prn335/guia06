@@ -27,19 +27,38 @@ public abstract class AbstractFacade<T> {
         try {
             if (em != null && entity != null) {
                 em.persist(entity);
-            }
+            }else{
             System.out.println("algo es nulo");
+            }
         } catch (Exception e) {
             System.out.println("ERROR: " + e);
         }
     }
 
     public void edit(T entity) {
-        getEntityManager().merge(entity);
+        EntityManager em = getEntityManager();
+        try {
+            if (em != null && entity != null) {
+                em.merge(entity);
+            }else{
+            System.out.println("algo es nulo");
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+        }
     }
-
+    
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+        EntityManager em = getEntityManager();
+        try {
+            if (em != null && entity != null) {
+                em.remove(getEntityManager().merge(entity));
+            }else{
+            System.out.println("algo es nulo");
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+        }
     }
 
     public T find(Object id) {
